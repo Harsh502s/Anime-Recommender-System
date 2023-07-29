@@ -18,10 +18,11 @@ st.set_page_config(
 )
 
 # Importing the dataset
-
-anime_data = pd.read_csv(r"anime_rec.csv")
-anime_posters = pd.read_csv(r"anime_data_cleaned.csv")
-
+try:
+    anime_data = pd.read_csv(r"anime_rec.csv")
+    anime_posters = pd.read_csv(r"anime_data_cleaned.csv")
+except:
+    pass
 
 def fetch_anime_url(anime_id):
     url = anime_posters[anime_posters["anime_id"] == anime_id].urls.values[0]
@@ -53,9 +54,10 @@ def recommend(anime):
 
 
 # Importing the similarity matrix
-
-similarity = pickle.load(open(r"similarity_matrix.pkl", "rb"))
-
+try:
+    similarity = pickle.load(open(r"similarity_matrix.pkl", "rb"))
+except:
+    pass
 
 def home_page():
     st.title("Welcome to Anime Recommender! :ninja:")
@@ -131,7 +133,7 @@ def about_page():
     st.write("\n")
     st.write("\n")
     st.write(
-        "This Anime Recommender App is made by [Harshit Singh](https://github.com/Harsh502s). :sunglasses:"
+        "This Anime Recommender App is made by [Harshit Singh](https://Harsh502s.github.io/). :ninja:"
     )
 
 
