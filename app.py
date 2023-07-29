@@ -82,12 +82,39 @@ def recommender_page():
 
     anime_list = anime_data["title"].tolist()
     anime_list.sort()
-    anime_list.insert(0, "Select")
+    anime_list.insert(0, "Top 8 Animes")
     anime_select = st.selectbox("Select an Anime", anime_list)
 
     if st.button("Recommendation"):
-        if anime_select == "Select":
-            st.write("Please select an anime.")
+        if anime_select == "Top 8 Animes":
+            top8 = anime_posters.sort_values("score", ascending=False).head(8)
+            col1, col2, col3, col4 = st.columns(4)
+            with col1:
+                st.write(f"[{top8.iloc[0].title}]({top8.iloc[0].urls})")
+                st.image(top8.iloc[0].poster)
+            with col2:
+                st.write(f"[{top8.iloc[1].title}]({top8.iloc[1].urls})")
+                st.image(top8.iloc[1].poster)
+            with col3:
+                st.write(f"[{top8.iloc[2].title}]({top8.iloc[2].urls})")
+                st.image(top8.iloc[2].poster)
+            with col4:
+                st.write(f"[{top8.iloc[3].title}]({top8.iloc[3].urls})")
+                st.image(top8.iloc[3].poster)
+                
+            col5, col6, col7, col8 = st.columns(4)
+            with col5:
+                st.write(f"[{top8.iloc[4].title}]({top8.iloc[4].urls})")
+                st.image(top8.iloc[4].poster)
+            with col6:
+                st.write(f"[{top8.iloc[5].title}]({top8.iloc[5].urls})")
+                st.image(top8.iloc[5].poster)
+            with col7:
+                st.write(f"[{top8.iloc[6].title}]({top8.iloc[6].urls})")
+                st.image(top8.iloc[6].poster)
+            with col8:
+                st.write(f"[{top8.iloc[7].title}]({top8.iloc[7].urls})")
+                st.image(top8.iloc[7].poster)
         else:
             (
                 recommended_anime_names,
