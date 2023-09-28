@@ -74,22 +74,21 @@ def home_page():
     height: 100%;
     box-shadow: 0 0 0 1px rgba(0,0,0,.1);
     border-radius: 5rem;
-    padding: 2rem;
-}
+    padding: 2rem;}
 
-div.css-k7vsyb.e16nr0p31>h1 {
+    div.css-k7vsyb.e16nr0p31>h1 {
     font-family: Poppins, sans-serif;
-}
+    }
 
-div.css-14xtw13.e8zbici0 {
-    margin-right: 2rem;
-    scale: 1.15;
-}
+    div.css-14xtw13.e8zbici0 {
+        margin-right: 2rem;
+        scale: 1.15;
+    }
 
-div.css-nahz7x.e16nr0p34>p {
-    font-family: Poppins, sans-serif;
-    font-size: 1.05rem;
-}
+    div.css-nahz7x.e16nr0p34>p {
+        font-family: Poppins, sans-serif;
+        font-size: 1.05rem;
+    }
     </style>
     """
     st.markdown(style_for_page, unsafe_allow_html=True)
