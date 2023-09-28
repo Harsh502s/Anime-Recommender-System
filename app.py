@@ -7,6 +7,9 @@ import pandas as pd
 import pickle
 from PIL import Image
 
+# Importing the stylesheet
+
+
 # Make the page full width
 im = Image.open(r"ninja.png")
 st.set_page_config(
@@ -23,6 +26,7 @@ try:
     anime_posters = pd.read_csv(r"anime_data_cleaned.csv")
 except:
     pass
+
 
 def fetch_anime_url(anime_id):
     url = anime_posters[anime_posters["anime_id"] == anime_id].urls.values[0]
@@ -55,11 +59,41 @@ def recommend(anime):
 
 # Importing the similarity matrix
 try:
-    similarity = pickle.load(open(r"D:\Github\Anime-Recommender\similarity_matrix.pkl", "rb"))
+    similarity = pickle.load(
+        open(r"D:\Github\Anime-Recommender\similarity_matrix.pkl", "rb")
+    )
 except:
     pass
 
+
 def home_page():
+    style_for_page = """
+    <style>
+    div.css-1v0mbdj.etr89bj1>img {
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+    border-radius: 5rem;
+    padding: 2rem;
+}
+
+div.css-k7vsyb.e16nr0p31>h1 {
+    font-family: Poppins, sans-serif;
+}
+
+div.css-14xtw13.e8zbici0 {
+    margin-right: 2rem;
+    scale: 1.15;
+}
+
+div.css-nahz7x.e16nr0p34>p {
+    font-family: Poppins, sans-serif;
+    font-size: 1.05rem;
+}
+    </style>
+    """
+    st.markdown(style_for_page, unsafe_allow_html=True)
+
     st.title("Welcome to Anime Recommender! :ninja:")
     st.subheader("Discover Your Next Favorite Anime")
 
@@ -78,6 +112,21 @@ def home_page():
 
 # Define the home page
 def recommender_page():
+    style_for_page = """
+    <style>
+    div.css-nahz7x.e16nr0p34>p {
+    justify-content: center;
+    display: inline-flex;}
+    div.css-1v0mbdj.etr89bj1>img {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+    border-radius: 1rem;
+    </style>
+    """
+    st.markdown(style_for_page, unsafe_allow_html=True)
+
     st.title("Anime Recommendation System")
 
     anime_list = anime_data["title"].tolist()
@@ -101,7 +150,7 @@ def recommender_page():
             with col4:
                 st.write(f"[{top8.iloc[3].title}]({top8.iloc[3].urls})")
                 st.image(top8.iloc[3].poster)
-                
+
             col5, col6, col7, col8 = st.columns(4)
             with col5:
                 st.write(f"[{top8.iloc[4].title}]({top8.iloc[4].urls})")
