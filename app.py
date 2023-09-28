@@ -55,7 +55,7 @@ def recommend(anime):
 
 # Importing the similarity matrix
 try:
-    similarity = pickle.load(open(r"similarity_matrix.pkl", "rb"))
+    similarity = pickle.load(open(r"D:\Github\Anime-Recommender\similarity_matrix.pkl", "rb"))
 except:
     pass
 
