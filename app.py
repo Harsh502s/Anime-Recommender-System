@@ -11,6 +11,7 @@ from PIL import Image
 
 
 # Make the page full width
+sidebar_bg_img = Image.open(r"city_light.jpg")
 im = Image.open(r"ninja.png")
 st.set_page_config(
     page_title="Anime Recommender App",
@@ -29,6 +30,8 @@ try:
     )
 except:
     print("One or more files are missing!")
+finally:
+    print("Anime Recommender App is ready to use!")
 
 
 def fetch_anime_url(anime_id):
@@ -107,7 +110,7 @@ def home_page():
 
 # Recommender Page
 def recommender_page():
-    style_for_page = """
+    style_for_rec_page = """
     <style>
     div.css-1v0mbdj.etr89bj1>img {
     width: 100%;
@@ -118,7 +121,7 @@ def recommender_page():
     }
     </style>
     """
-    st.markdown(style_for_page, unsafe_allow_html=True)
+    st.markdown(style_for_rec_page, unsafe_allow_html=True)
 
     st.title("Anime Recommendation System")
 
@@ -130,31 +133,31 @@ def recommender_page():
     if st.button("Recommendation"):
         if anime_select == "Top 8 Animes":
             top8 = anime_posters.sort_values("score", ascending=False).head(8)
-            col1, col2, col3, col4 = st.columns(4)
-            with col1:
+            col0, col1, col2, col3 = st.columns(4)
+            with col0:
                 st.write(f"[{top8.iloc[0].title}]({top8.iloc[0].urls})")
                 st.image(top8.iloc[0].poster)
-            with col2:
+            with col1:
                 st.write(f"[{top8.iloc[1].title}]({top8.iloc[1].urls})")
                 st.image(top8.iloc[1].poster)
-            with col3:
+            with col2:
                 st.write(f"[{top8.iloc[2].title}]({top8.iloc[2].urls})")
                 st.image(top8.iloc[2].poster)
-            with col4:
+            with col3:
                 st.write(f"[{top8.iloc[3].title}]({top8.iloc[3].urls})")
                 st.image(top8.iloc[3].poster)
 
-            col5, col6, col7, col8 = st.columns(4)
-            with col5:
+            col4, col5, col6, col7 = st.columns(4)
+            with col4:
                 st.write(f"[{top8.iloc[4].title}]({top8.iloc[4].urls})")
                 st.image(top8.iloc[4].poster)
-            with col6:
+            with col5:
                 st.write(f"[{top8.iloc[5].title}]({top8.iloc[5].urls})")
                 st.image(top8.iloc[5].poster)
-            with col7:
+            with col6:
                 st.write(f"[{top8.iloc[6].title}]({top8.iloc[6].urls})")
                 st.image(top8.iloc[6].poster)
-            with col8:
+            with col7:
                 st.write(f"[{top8.iloc[7].title}]({top8.iloc[7].urls})")
                 st.image(top8.iloc[7].poster)
         else:
