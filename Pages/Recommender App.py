@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import pickle
+from ast import literal_eval
 
 
 # Importing the dataset
@@ -78,7 +79,12 @@ def recommender_page():
     anime_list = anime_data["title"].tolist()
     anime_list.sort()
     anime_list.insert(0, "Top 8 Animes")
-    anime_select = st.selectbox("Select an Anime", anime_list)
+    anime_select = st.selectbox("Select an Anime", anime_list, key="anime_select")
+    genre_select = st.selectbox(
+        "Select a Genre",
+        sorted(set([j for i in anime_data["genres"] for j in literal_eval(i)])),
+        key="genre_select",
+    )
 
     if st.button("Recommendation"):
         if anime_select == "Top 8 Animes":
