@@ -1,3 +1,13 @@
-# Anime Recommender System
- - A content based anime recommender system.
- - Application Running at: <a href='https://huggingface.co/spaces/Harsh502s/Anime-Recommender'>Link<a/>
+---
+title: Anime Recommender
+emoji: 📈
+colorFrom: blue
+colorTo: red
+sdk: streamlit
+sdk_version: 1.21.0
+app_file: app.py
+pinned: false
+license: mit
+---
+
+Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
