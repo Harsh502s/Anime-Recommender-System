@@ -7,11 +7,10 @@ import pickle
 @st.cache_data
 def load_data():
     try:
-        anime_data = pd.read_csv(r"anime_rec.csv")
-        anime_posters = pd.read_csv(r"anime_data_cleaned.csv")
+        anime_data = pd.read_csv(r"rec_data.csv")
     except:
         st.error("Dataset Not Found")
-    return anime_data, anime_posters
+    return anime_data
 
 
 # Uncomment this if you want to load the model
@@ -25,17 +24,17 @@ def load_data():
 
 
 # similarity = load_model()
-anime_data, anime_posters = load_data()
+anime_data = load_data()
 
 
 # Fetching the poster and url of the anime
 def fetch_anime_url(anime_id):
-    url = anime_posters[anime_posters["anime_id"] == anime_id].urls.values[0]
+    url = anime_data[anime_data["anime_id"] == anime_id].urls.values[0]
     return url
 
 
 def fetch_poster(anime_id):
-    poster = anime_posters[anime_posters["anime_id"] == anime_id].poster.values[0]
+    poster = anime_data[anime_data["anime_id"] == anime_id].poster.values[0]
     return poster
 
 
@@ -83,33 +82,33 @@ def recommender_page():
 
     if st.button("Recommendation"):
         if anime_select == "Top 8 Animes":
-            top8 = anime_posters.sort_values("score", ascending=False).head(8)
+            top8 = anime_data.sort_values("score", ascending=False).head(8)
             col1, col2, col3, col4 = st.columns(4)
             with col1:
-                st.write(f"[{top8.iloc[0].title}]({top8.iloc[0].urls})")
+                st.write(f"[{top8.iloc[0].title}]({top8.iloc[0].anime_url})")
                 st.image(top8.iloc[0].poster)
             with col2:
-                st.write(f"[{top8.iloc[1].title}]({top8.iloc[1].urls})")
+                st.write(f"[{top8.iloc[1].title}]({top8.iloc[1].anime_url})")
                 st.image(top8.iloc[1].poster)
             with col3:
-                st.write(f"[{top8.iloc[2].title}]({top8.iloc[2].urls})")
+                st.write(f"[{top8.iloc[2].title}]({top8.iloc[2].anime_url})")
                 st.image(top8.iloc[2].poster)
             with col4:
-                st.write(f"[{top8.iloc[3].title}]({top8.iloc[3].urls})")
+                st.write(f"[{top8.iloc[3].title}]({top8.iloc[3].anime_url})")
                 st.image(top8.iloc[3].poster)
 
             col5, col6, col7, col8 = st.columns(4)
             with col5:
-                st.write(f"[{top8.iloc[4].title}]({top8.iloc[4].urls})")
+                st.write(f"[{top8.iloc[4].title}]({top8.iloc[4].anime_url})")
                 st.image(top8.iloc[4].poster)
             with col6:
-                st.write(f"[{top8.iloc[5].title}]({top8.iloc[5].urls})")
+                st.write(f"[{top8.iloc[5].title}]({top8.iloc[5].anime_url})")
                 st.image(top8.iloc[5].poster)
             with col7:
-                st.write(f"[{top8.iloc[6].title}]({top8.iloc[6].urls})")
+                st.write(f"[{top8.iloc[6].title}]({top8.iloc[6].anime_url})")
                 st.image(top8.iloc[6].poster)
             with col8:
-                st.write(f"[{top8.iloc[7].title}]({top8.iloc[7].urls})")
+                st.write(f"[{top8.iloc[7].title}]({top8.iloc[7].anime_url})")
                 st.image(top8.iloc[7].poster)
         else:
             (
