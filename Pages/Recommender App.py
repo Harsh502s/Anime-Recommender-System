@@ -28,6 +28,13 @@ def load_data():
 anime_data = load_data()
 
 
+def get_genres():
+    genres = sorted(set([j for i in anime_data["genres"] for j in literal_eval(i)]))
+    genres.remove("NA")
+    genres.insert(0, "All")
+    return genres
+
+
 # Fetching the poster and url of the anime
 def fetch_anime_url(anime_id):
     url = anime_data[anime_data["anime_id"] == anime_id].urls.values[0]
@@ -82,7 +89,7 @@ def recommender_page():
     anime_select = st.selectbox("Select an Anime", anime_list, key="anime_select")
     genre_select = st.selectbox(
         "Select a Genre",
-        sorted(set([j for i in anime_data["genres"] for j in literal_eval(i)])),
+        get_genres(),
         key="genre_select",
     )
 
