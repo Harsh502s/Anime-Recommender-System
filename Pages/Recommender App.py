@@ -91,7 +91,7 @@ def top_animes():
     style_for_page = """
     <style>
     div.st-emotion-cache-1v0mbdj.e115fcil1>img {
-    border-radius: 10px;
+    border-radius: 20px;
     }
     a.st-emotion-cache-1lbx6hs.e16zdaao0 {
     border-radius: 15px;
@@ -180,7 +180,7 @@ def top_animes_genres(genre_select):
     style_for_page = """
     <style>
     div.st-emotion-cache-1v0mbdj.e115fcil1>img {
-    border-radius: 10px;
+    border-radius: 20px;
     }
     a.st-emotion-cache-1lbx6hs.e16zdaao0 {
     border-radius: 15px;
@@ -268,7 +268,7 @@ def top_animes_custom(anime_select):
     style_for_page = """
     <style>
     div.st-emotion-cache-1v0mbdj.e115fcil1>img {
-    border-radius: 10px;
+    border-radius: 20px;
     }
     a.st-emotion-cache-1lbx6hs.e16zdaao0 {
     border-radius: 15px;
@@ -360,7 +360,7 @@ def top_animes_custom_genres(anime_select, genre_select):
     style_for_page = """
     <style>
     div.st-emotion-cache-1v0mbdj.e115fcil1>img {
-    border-radius: 10px;
+    border-radius: 20px;
     }
     a.st-emotion-cache-1lbx6hs.e16zdaao0 {
     border-radius: 15px;
@@ -452,7 +452,7 @@ def recommender_page():
     style_for_page = """
     <style>
     button.st-emotion-cache-c766yy.ef3psqc11 {
-    border-radius: 10px;    
+    border-radius: 20px;    
     }
 
     button.st-emotion-cache-c766yy.ef3psqc11:hover {
