@@ -14,30 +14,34 @@ def load_data():
     return anime_data
 
 
-# Uncomment this if you want to load the model
-# @st.cache_resource
-# def load_model():
-#     try:
-#         similarity = pickle.load(open(r"similarity.pkl", "rb"))
-#     except:
-#         st.error("Model Not Found")
-#     return similarity
-
-
-# similarity = load_model()
 anime_data = load_data()
 
 
 def get_genres():
-    genres = sorted(set([j for i in anime_data["genres"] for j in literal_eval(i)]))
+    genres = sorted(
+        list(set([j for i in anime_data["genres"] for j in literal_eval(i)]))
+    )
+    genres.insert(0, "All Genres")
     genres.remove("NA")
-    genres.insert(0, "All")
     return genres
+
+
+# Uncomment this if you want to load the model
+@st.cache_resource
+def load_model():
+    try:
+        similarity = pickle.load(open(r"similarity.pkl", "rb"))
+    except:
+        st.error("Model Not Found")
+    return similarity
+
+
+similarity = load_model()
 
 
 # Fetching the poster and url of the anime
 def fetch_anime_url(anime_id):
-    url = anime_data[anime_data["anime_id"] == anime_id].urls.values[0]
+    url = anime_data[anime_data["anime_id"] == anime_id].anime_url.values[0]
     return url
 
 
@@ -47,11 +51,27 @@ def fetch_poster(anime_id):
 
 
 # Recommender System
-def recommend(anime):
-    index = anime_data[anime_data["title"] == anime].index[0]
+def recommend(anime, genre=None):
+    if genre == None:
+        index = (
+            anime_data[anime_data["title"] == anime]
+            .sort_values("score", ascending=False)
+            .index[0]
+        )
+    elif genre != None:
+        index = (
+            anime_data[
+                (anime_data["title"] == anime)
+                | (anime_data["genres"].str.contains(genre))
+            ]
+            .sort_values("score", ascending=False)
+            .index[0]
+        )
+    # index = anime_data[anime_data["title"] == anime].index[0]
     distances = sorted(
         list(enumerate(similarity[index])), reverse=True, key=lambda x: x[1]
     )
+
     recommended_anime_names = []
     recommended_anime_posters = []
     recommended_anime_urls = []
@@ -66,96 +86,405 @@ def recommend(anime):
     return recommended_anime_names, recommended_anime_posters, recommended_anime_urls
 
 
-# Recommender Page
-def recommender_page():
+# Function to display the top 8 animes with the highest rating
+def top_animes():
     style_for_page = """
     <style>
-    div.css-1v0mbdj.etr89bj1>img {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    box-shadow: 0 0 0 1px rgba(0,0,0,.1);
-    border-radius: 1rem;
+    div.st-emotion-cache-1v0mbdj.e115fcil1>img {
+    border-radius: 10px;
+    }
+    a.st-emotion-cache-1lbx6hs.e16zdaao0 {
+    border-radius: 15px;
+    text-align: center;
+    }
+    a.st-emotion-cache-1lbx6hs.e16zdaao0>div>p {
+    font-weight: 600;
+    }
+    a.st-emotion-cache-1lbx6hs.e16zdaao0:hover {
+    scale: 1.05;
+    transition-duration: 0.3s;
     }
     </style>
     """
     st.markdown(style_for_page, unsafe_allow_html=True)
 
-    st.title("Anime Recommendation System")
+    top8 = anime_data.sort_values("score", ascending=False).head(8)
+
+    with st.container():
+        col0, col1, col2, col3 = st.columns(4)
+        with col0:
+            st.link_button(
+                f"{top8.iloc[0].title}",
+                f"{top8.iloc[0].anime_url}",
+                use_container_width=True,
+            )
+            st.image(top8.iloc[0].poster, use_column_width=True)
+        with col1:
+            st.link_button(
+                f"{top8.iloc[1].title}",
+                f"{top8.iloc[1].anime_url}",
+                use_container_width=True,
+            )
+            st.image(top8.iloc[1].poster, use_column_width=True)
+        with col2:
+            st.link_button(
+                f"{top8.iloc[2].title}",
+                f"{top8.iloc[2].anime_url}",
+                use_container_width=True,
+            )
+            st.image(top8.iloc[2].poster, use_column_width=True)
+        with col3:
+            st.link_button(
+                f"{top8.iloc[3].title}",
+                f"{top8.iloc[3].anime_url}",
+                use_container_width=True,
+            )
+            st.image(top8.iloc[3].poster, use_column_width=True)
+
+    st.divider()
+
+    with st.container():
+        col4, col5, col6, col7 = st.columns(4)
+        with col4:
+            st.link_button(
+                f"{top8.iloc[4].title}",
+                f"{top8.iloc[4].anime_url}",
+                use_container_width=True,
+            )
+            st.image(top8.iloc[4].poster, use_column_width=True)
+        with col5:
+            st.link_button(
+                f"{top8.iloc[5].title}",
+                f"{top8.iloc[5].anime_url}",
+                use_container_width=True,
+            )
+            st.image(top8.iloc[5].poster, use_column_width=True)
+        with col6:
+            st.link_button(
+                f"{top8.iloc[6].title}",
+                f"{top8.iloc[6].anime_url}",
+                use_container_width=True,
+            )
+            st.image(top8.iloc[6].poster, use_column_width=True)
+        with col7:
+            st.link_button(
+                f"{top8.iloc[7].title}",
+                f"{top8.iloc[7].anime_url}",
+                use_container_width=True,
+            )
+            st.image(top8.iloc[7].poster, use_column_width=True)
+
+
+# Function to display the top 8 animes for user given genre
+def top_animes_genres(genre_select):
+    style_for_page = """
+    <style>
+    div.st-emotion-cache-1v0mbdj.e115fcil1>img {
+    border-radius: 10px;
+    }
+    a.st-emotion-cache-1lbx6hs.e16zdaao0 {
+    border-radius: 15px;
+    text-align: center;
+    }
+    a.st-emotion-cache-1lbx6hs.e16zdaao0>div>p {
+    font-weight: 600;
+    }    
+    a.st-emotion-cache-1lbx6hs.e16zdaao0:hover {
+    scale: 1.05;
+    transition-duration: 0.3s;
+    }
+    </style>
+    """
+    st.markdown(style_for_page, unsafe_allow_html=True)
+
+    top_8_genre = anime_data[
+        anime_data["genres"].str.contains(genre_select)
+    ].sort_values("score", ascending=False)[:8]
+    col0, col1, col2, col3 = st.columns(4)
+    with col0:
+        st.link_button(
+            f"{top_8_genre.iloc[0].title}",
+            f"{top_8_genre.iloc[0].anime_url}",
+            use_container_width=True,
+        )
+        st.image(top_8_genre.iloc[0].poster, use_column_width=True)
+    with col1:
+        st.link_button(
+            f"{top_8_genre.iloc[1].title}",
+            f"{top_8_genre.iloc[1].anime_url}",
+            use_container_width=True,
+        )
+        st.image(top_8_genre.iloc[1].poster, use_column_width=True)
+    with col2:
+        st.link_button(
+            f"{top_8_genre.iloc[2].title}",
+            f"{top_8_genre.iloc[2].anime_url}",
+            use_container_width=True,
+        )
+        st.image(top_8_genre.iloc[2].poster, use_column_width=True)
+    with col3:
+        st.link_button(
+            f"{top_8_genre.iloc[3].title}",
+            f"{top_8_genre.iloc[3].anime_url}",
+            use_container_width=True,
+        )
+        st.image(top_8_genre.iloc[3].poster, use_column_width=True)
+
+    st.divider()
+
+    col4, col5, col6, col7 = st.columns(4)
+    with col4:
+        st.link_button(
+            f"{top_8_genre.iloc[4].title}",
+            f"{top_8_genre.iloc[4].anime_url}",
+            use_container_width=True,
+        )
+        st.image(top_8_genre.iloc[4].poster, use_column_width=True)
+    with col5:
+        st.link_button(
+            f"{top_8_genre.iloc[5].title}",
+            f"{top_8_genre.iloc[5].anime_url}",
+            use_container_width=True,
+        )
+        st.image(top_8_genre.iloc[5].poster, use_column_width=True)
+    with col6:
+        st.link_button(
+            f"{top_8_genre.iloc[6].title}",
+            f"{top_8_genre.iloc[6].anime_url}",
+            use_container_width=True,
+        )
+        st.image(top_8_genre.iloc[6].poster, use_column_width=True)
+    with col7:
+        st.link_button(
+            f"{top_8_genre.iloc[7].title}",
+            f"{top_8_genre.iloc[7].anime_url}",
+            use_container_width=True,
+        )
+        st.image(top_8_genre.iloc[7].poster, use_column_width=True)
+
+
+# Function to display the top 8 animes with user given anime name for all genres
+def top_animes_custom(anime_select):
+    style_for_page = """
+    <style>
+    div.st-emotion-cache-1v0mbdj.e115fcil1>img {
+    border-radius: 10px;
+    }
+    a.st-emotion-cache-1lbx6hs.e16zdaao0 {
+    border-radius: 15px;
+    text-align: center;
+    }
+    a.st-emotion-cache-1lbx6hs.e16zdaao0>div>p {
+    font-weight: 600;
+    }    
+    a.st-emotion-cache-1lbx6hs.e16zdaao0:hover {
+    scale: 1.05;
+    transition-duration: 0.3s;
+    }
+    </style>
+    """
+    st.markdown(style_for_page, unsafe_allow_html=True)
+
+    (
+        recommended_anime_names,
+        recommended_anime_posters,
+        recommended_anime_urls,
+    ) = recommend(anime_select)
+    with st.container():
+        col0, col1, col2, col3 = st.columns(4)
+        with col0:
+            st.link_button(
+                f"{recommended_anime_names[0]}",
+                f"{recommended_anime_urls[0]}",
+                use_container_width=True,
+            )
+            st.image(recommended_anime_posters[0], use_column_width=True)
+        with col1:
+            st.link_button(
+                f"{recommended_anime_names[1]}",
+                f"{recommended_anime_urls[1]}",
+                use_container_width=True,
+            )
+            st.image(recommended_anime_posters[1], use_column_width=True)
+        with col2:
+            st.link_button(
+                f"{recommended_anime_names[2]}",
+                f"{recommended_anime_urls[2]}",
+                use_container_width=True,
+            )
+            st.image(recommended_anime_posters[2], use_column_width=True)
+        with col3:
+            st.link_button(
+                f"{recommended_anime_names[3]}",
+                f"{recommended_anime_urls[3]}",
+                use_container_width=True,
+            )
+            st.image(recommended_anime_posters[3], use_column_width=True)
+
+    st.divider()
+
+    with st.container():
+        col4, col5, col6, col7 = st.columns(4)
+        with col4:
+            st.link_button(
+                f"{recommended_anime_names[4]}",
+                f"{recommended_anime_urls[4]}",
+                use_container_width=True,
+            )
+            st.image(recommended_anime_posters[4], use_column_width=True)
+        with col5:
+            st.link_button(
+                f"{recommended_anime_names[5]}",
+                f"{recommended_anime_urls[5]}",
+                use_container_width=True,
+            )
+            st.image(recommended_anime_posters[5], use_column_width=True)
+        with col6:
+            st.link_button(
+                f"{recommended_anime_names[6]}",
+                f"{recommended_anime_urls[6]}",
+                use_container_width=True,
+            )
+            st.image(recommended_anime_posters[6], use_column_width=True)
+        with col7:
+            st.link_button(
+                f"{recommended_anime_names[7]}",
+                f"{recommended_anime_urls[7]}",
+                use_container_width=True,
+            )
+            st.image(recommended_anime_posters[7], use_column_width=True)
+
+
+# Function to display the top 8 animes with user given anime name and genre
+def top_animes_custom_genres(anime_select, genre_select):
+    style_for_page = """
+    <style>
+    div.st-emotion-cache-1v0mbdj.e115fcil1>img {
+    border-radius: 10px;
+    }
+    a.st-emotion-cache-1lbx6hs.e16zdaao0 {
+    border-radius: 15px;
+    text-align: center;
+    }
+    a.st-emotion-cache-1lbx6hs.e16zdaao0>div>p {
+    font-weight: 600;
+    }
+    a.st-emotion-cache-1lbx6hs.e16zdaao0:hover {
+    scale: 1.05;
+    transition-duration: 0.3s;
+    }
+    </style>
+    """
+    st.markdown(style_for_page, unsafe_allow_html=True)
+
+    (
+        recommended_anime_names,
+        recommended_anime_posters,
+        recommended_anime_urls,
+    ) = recommend(anime_select, genre_select)
+    with st.container():
+        col0, col1, col2, col3 = st.columns(4)
+        with col0:
+            st.link_button(
+                f"{recommended_anime_names[0]}",
+                f"{recommended_anime_urls[0]}",
+                use_container_width=True,
+            )
+            st.image(recommended_anime_posters[0], use_column_width=True)
+        with col1:
+            st.link_button(
+                f"{recommended_anime_names[1]}",
+                f"{recommended_anime_urls[1]}",
+                use_container_width=True,
+            )
+            st.image(recommended_anime_posters[1], use_column_width=True)
+        with col2:
+            st.link_button(
+                f"{recommended_anime_names[2]}",
+                f"{recommended_anime_urls[2]}",
+                use_container_width=True,
+            )
+            st.image(recommended_anime_posters[2], use_column_width=True)
+        with col3:
+            st.link_button(
+                f"{recommended_anime_names[3]}",
+                f"{recommended_anime_urls[3]}",
+                use_container_width=True,
+            )
+            st.image(recommended_anime_posters[3], use_column_width=True)
+
+    st.divider()
+
+    with st.container():
+        col4, col5, col6, col7 = st.columns(4)
+        with col4:
+            st.link_button(
+                f"{recommended_anime_names[4]}",
+                f"{recommended_anime_urls[4]}",
+                use_container_width=True,
+            )
+            st.image(recommended_anime_posters[4], use_column_width=True)
+        with col5:
+            st.link_button(
+                f"{recommended_anime_names[5]}",
+                f"{recommended_anime_urls[5]}",
+                use_container_width=True,
+            )
+            st.image(recommended_anime_posters[5], use_column_width=True)
+        with col6:
+            st.link_button(
+                f"{recommended_anime_names[6]}",
+                f"{recommended_anime_urls[6]}",
+                use_container_width=True,
+            )
+            st.image(recommended_anime_posters[6], use_column_width=True)
+        with col7:
+            st.link_button(
+                f"{recommended_anime_names[7]}",
+                f"{recommended_anime_urls[7]}",
+                use_container_width=True,
+            )
+            st.image(recommended_anime_posters[7], use_column_width=True)
+
+
+# Recommender Page
+def recommender_page():
+    style_for_page = """
+    <style>
+    button.st-emotion-cache-c766yy.ef3psqc11 {
+    border-radius: 10px;    
+    }
+
+    button.st-emotion-cache-c766yy.ef3psqc11:hover {
+    scale: 1.05;
+    transition-duration: 0.3s;
+    }
+    </style>
+    """
+    st.markdown(style_for_page, unsafe_allow_html=True)
+
+    st.title("Anime Recommendation System :ninja:")
 
     anime_list = anime_data["title"].tolist()
     anime_list.sort()
     anime_list.insert(0, "Top 8 Animes")
     anime_select = st.selectbox("Select an Anime", anime_list, key="anime_select")
-    genre_select = st.selectbox(
-        "Select a Genre",
-        get_genres(),
-        key="genre_select",
-    )
+    genre_select = st.selectbox("Select a Genre", get_genres(), key="genre_select")
 
     if st.button("Recommendation"):
-        if anime_select == "Top 8 Animes":
-            top8 = anime_data.sort_values("score", ascending=False).head(8)
-            col1, col2, col3, col4 = st.columns(4)
-            with col1:
-                st.write(f"[{top8.iloc[0].title}]({top8.iloc[0].anime_url})")
-                st.image(top8.iloc[0].poster)
-            with col2:
-                st.write(f"[{top8.iloc[1].title}]({top8.iloc[1].anime_url})")
-                st.image(top8.iloc[1].poster)
-            with col3:
-                st.write(f"[{top8.iloc[2].title}]({top8.iloc[2].anime_url})")
-                st.image(top8.iloc[2].poster)
-            with col4:
-                st.write(f"[{top8.iloc[3].title}]({top8.iloc[3].anime_url})")
-                st.image(top8.iloc[3].poster)
-
-            col5, col6, col7, col8 = st.columns(4)
-            with col5:
-                st.write(f"[{top8.iloc[4].title}]({top8.iloc[4].anime_url})")
-                st.image(top8.iloc[4].poster)
-            with col6:
-                st.write(f"[{top8.iloc[5].title}]({top8.iloc[5].anime_url})")
-                st.image(top8.iloc[5].poster)
-            with col7:
-                st.write(f"[{top8.iloc[6].title}]({top8.iloc[6].anime_url})")
-                st.image(top8.iloc[6].poster)
-            with col8:
-                st.write(f"[{top8.iloc[7].title}]({top8.iloc[7].anime_url})")
-                st.image(top8.iloc[7].poster)
-        else:
-            (
-                recommended_anime_names,
-                recommended_anime_posters,
-                recommended_anime_urls,
-            ) = recommend(anime_select)
-            col1, col2, col3, col4 = st.columns(4)
-            with col1:
-                st.write(f"[{recommended_anime_names[0]}]({recommended_anime_urls[0]})")
-                st.image(recommended_anime_posters[0])
-            with col2:
-                st.write(f"[{recommended_anime_names[1]}]({recommended_anime_urls[1]})")
-                st.image(recommended_anime_posters[1])
-            with col3:
-                st.write(f"[{recommended_anime_names[2]}]({recommended_anime_urls[2]})")
-                st.image(recommended_anime_posters[2])
-            with col4:
-                st.write(f"[{recommended_anime_names[3]}]({recommended_anime_urls[3]})")
-                st.image(recommended_anime_posters[3])
-
-            col5, col6, col7, col8 = st.columns(4)
-            with col5:
-                st.write(f"[{recommended_anime_names[4]}]({recommended_anime_urls[4]})")
-                st.image(recommended_anime_posters[4])
-            with col6:
-                st.write(f"[{recommended_anime_names[5]}]({recommended_anime_urls[5]})")
-                st.image(recommended_anime_posters[5])
-            with col7:
-                st.write(f"[{recommended_anime_names[6]}]({recommended_anime_urls[6]})")
-                st.image(recommended_anime_posters[6])
-            with col8:
-                st.write(f"[{recommended_anime_names[7]}]({recommended_anime_urls[7]})")
-                st.image(recommended_anime_posters[7])
+        st.divider()
+        if anime_select == "Top 8 Animes" and genre_select == "All Genres":
+            top_animes()
+            st.divider()
+        elif anime_select == "Top 8 Animes" and genre_select != "All Genres":
+            top_animes_genres(genre_select)
+            st.divider()
+        elif anime_select != "Top 8 Animes" and genre_select == "All Genres":
+            top_animes_custom(anime_select)
+            st.divider()
+        elif anime_select != "Top 8 Animes" and genre_select != "All Genres":
+            top_animes_custom_genres(anime_select, genre_select)
+            st.divider()
 
 
 if __name__ == "__main__":

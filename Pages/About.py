@@ -22,6 +22,10 @@ def about_page():
     st.write(
         "This Anime Recommender App is made by [Harshit Singh](https://Harsh502s.github.io/). :ninja:"
     )
+    st.write("\n")
+    st.write(
+        "Theme of this app is inspired by Mist Hashira Muichiro Tokito from [Demon Slayer](https://aniwatch.to/demon-slayer-kimetsu-no-yaiba-47)."
+    )
 
 
 if __name__ == "__main__":

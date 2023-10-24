@@ -2,6 +2,16 @@ import streamlit as st
 from st_pages import Page, show_pages
 from PIL import Image
 
+# Make the page full width
+im = Image.open(r"ninja.png")
+st.set_page_config(
+    page_title="Anime Recommender App",
+    page_icon=im,
+    layout="wide",
+    initial_sidebar_state="expanded",
+    menu_items={"About": "This Anime Recommender App is made by Harshit Singh."},
+)
+
 # Configuring Pages
 
 show_pages(
@@ -13,41 +23,12 @@ show_pages(
 )
 
 
-# Make the page full width
-im = Image.open(r"ninja.png")
-st.set_page_config(
-    page_title="Anime Recommender App",
-    page_icon=im,
-    layout="wide",
-    initial_sidebar_state="expanded",
-    menu_items={"About": "This Anime Recommender App is made by Harshit Singh."},
-)
-
-
 # Home Page
 def home_page():
     style_for_page = """
     <style>
-    div.css-1v0mbdj.etr89bj1>img {
-    width: 100%;
-    height: 100%;
-    box-shadow: 0 0 0 1px rgba(0,0,0,.1);
-    border-radius: 5rem;
-    padding: 4rem;
-    justify-content: left;}
-
-    div.css-k7vsyb.e16nr0p31>h1 {
-    font-family: Poppins, sans-serif;
-    }
-
-    div.css-14xtw13.e8zbici0 {
-        margin-right: 2rem;
-        scale: 1.15;
-    }
-
-    div.css-nahz7x.e16nr0p34>p {
-        font-family: Poppins, sans-serif;
-        font-size: 1.05rem;
+    div.st-emotion-cache-1v0mbdj.e115fcil1>img {
+    border-radius: 50px;
     }
     </style>
     """
@@ -61,7 +42,8 @@ def home_page():
         "Explore a world of anime and find personalized recommendations based on your anime preferences."
     )
     img = Image.open(r"animes.jpg")
-    st.image(img, use_column_width=True, caption="Anime Characters")
+    with st.container():
+        st.image(img, width=950, caption="Anime Characters")
     st.write(
         "Get started by selecting your favorite anime and let the recommendation system do the rest!"
     )
