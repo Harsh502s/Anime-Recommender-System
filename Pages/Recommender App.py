@@ -110,69 +110,21 @@ def top_animes():
 
     top8 = anime_data.sort_values("score", ascending=False).head(8)
 
-    with st.container():
-        col0, col1, col2, col3 = st.columns(4)
-        with col0:
-            st.link_button(
-                f"{top8.iloc[0].title}",
-                f"{top8.iloc[0].anime_url}",
-                use_container_width=True,
-            )
-            st.image(top8.iloc[0].poster, use_column_width=True)
-        with col1:
-            st.link_button(
-                f"{top8.iloc[1].title}",
-                f"{top8.iloc[1].anime_url}",
-                use_container_width=True,
-            )
-            st.image(top8.iloc[1].poster, use_column_width=True)
-        with col2:
-            st.link_button(
-                f"{top8.iloc[2].title}",
-                f"{top8.iloc[2].anime_url}",
-                use_container_width=True,
-            )
-            st.image(top8.iloc[2].poster, use_column_width=True)
-        with col3:
-            st.link_button(
-                f"{top8.iloc[3].title}",
-                f"{top8.iloc[3].anime_url}",
-                use_container_width=True,
-            )
-            st.image(top8.iloc[3].poster, use_column_width=True)
+    for i in range(0, 8, 4):
+        with st.container():
+            cols = st.columns(4)
+            for j, col in enumerate(cols):
+                index = i + j
+                with col:
+                    st.link_button(
+                        f"{top8.iloc[index].title}",
+                        f"{top8.iloc[index].anime_url}",
+                        use_container_width=True,
+                    )
+                    st.image(top8.iloc[index].poster, use_column_width=True)
 
-    st.divider()
-
-    with st.container():
-        col4, col5, col6, col7 = st.columns(4)
-        with col4:
-            st.link_button(
-                f"{top8.iloc[4].title}",
-                f"{top8.iloc[4].anime_url}",
-                use_container_width=True,
-            )
-            st.image(top8.iloc[4].poster, use_column_width=True)
-        with col5:
-            st.link_button(
-                f"{top8.iloc[5].title}",
-                f"{top8.iloc[5].anime_url}",
-                use_container_width=True,
-            )
-            st.image(top8.iloc[5].poster, use_column_width=True)
-        with col6:
-            st.link_button(
-                f"{top8.iloc[6].title}",
-                f"{top8.iloc[6].anime_url}",
-                use_container_width=True,
-            )
-            st.image(top8.iloc[6].poster, use_column_width=True)
-        with col7:
-            st.link_button(
-                f"{top8.iloc[7].title}",
-                f"{top8.iloc[7].anime_url}",
-                use_container_width=True,
-            )
-            st.image(top8.iloc[7].poster, use_column_width=True)
+        if i == 0:
+            st.divider()
 
 
 # Function to display the top 8 animes for user given genre
@@ -200,67 +152,20 @@ def top_animes_genres(genre_select):
     top_8_genre = anime_data[
         anime_data["genres"].str.contains(genre_select)
     ].sort_values("score", ascending=False)[:8]
-    col0, col1, col2, col3 = st.columns(4)
-    with col0:
-        st.link_button(
-            f"{top_8_genre.iloc[0].title}",
-            f"{top_8_genre.iloc[0].anime_url}",
-            use_container_width=True,
-        )
-        st.image(top_8_genre.iloc[0].poster, use_column_width=True)
-    with col1:
-        st.link_button(
-            f"{top_8_genre.iloc[1].title}",
-            f"{top_8_genre.iloc[1].anime_url}",
-            use_container_width=True,
-        )
-        st.image(top_8_genre.iloc[1].poster, use_column_width=True)
-    with col2:
-        st.link_button(
-            f"{top_8_genre.iloc[2].title}",
-            f"{top_8_genre.iloc[2].anime_url}",
-            use_container_width=True,
-        )
-        st.image(top_8_genre.iloc[2].poster, use_column_width=True)
-    with col3:
-        st.link_button(
-            f"{top_8_genre.iloc[3].title}",
-            f"{top_8_genre.iloc[3].anime_url}",
-            use_container_width=True,
-        )
-        st.image(top_8_genre.iloc[3].poster, use_column_width=True)
 
-    st.divider()
-
-    col4, col5, col6, col7 = st.columns(4)
-    with col4:
-        st.link_button(
-            f"{top_8_genre.iloc[4].title}",
-            f"{top_8_genre.iloc[4].anime_url}",
-            use_container_width=True,
-        )
-        st.image(top_8_genre.iloc[4].poster, use_column_width=True)
-    with col5:
-        st.link_button(
-            f"{top_8_genre.iloc[5].title}",
-            f"{top_8_genre.iloc[5].anime_url}",
-            use_container_width=True,
-        )
-        st.image(top_8_genre.iloc[5].poster, use_column_width=True)
-    with col6:
-        st.link_button(
-            f"{top_8_genre.iloc[6].title}",
-            f"{top_8_genre.iloc[6].anime_url}",
-            use_container_width=True,
-        )
-        st.image(top_8_genre.iloc[6].poster, use_column_width=True)
-    with col7:
-        st.link_button(
-            f"{top_8_genre.iloc[7].title}",
-            f"{top_8_genre.iloc[7].anime_url}",
-            use_container_width=True,
-        )
-        st.image(top_8_genre.iloc[7].poster, use_column_width=True)
+    for i in range(0, 8, 4):
+        cols = st.columns(4)
+        for j, col in enumerate(cols):
+            index = i + j
+            with col:
+                st.link_button(
+                    f"{top_8_genre.iloc[index].title}",
+                    f"{top_8_genre.iloc[index].anime_url}",
+                    use_container_width=True,
+                )
+                st.image(top_8_genre.iloc[index].poster, use_column_width=True)
+        if i == 0:
+            st.divider()
 
 
 # Function to display the top 8 animes with user given anime name for all genres
@@ -290,69 +195,21 @@ def top_animes_custom(anime_select):
         recommended_anime_posters,
         recommended_anime_urls,
     ) = recommend(anime_select)
-    with st.container():
-        col0, col1, col2, col3 = st.columns(4)
-        with col0:
-            st.link_button(
-                f"{recommended_anime_names[0]}",
-                f"{recommended_anime_urls[0]}",
-                use_container_width=True,
-            )
-            st.image(recommended_anime_posters[0], use_column_width=True)
-        with col1:
-            st.link_button(
-                f"{recommended_anime_names[1]}",
-                f"{recommended_anime_urls[1]}",
-                use_container_width=True,
-            )
-            st.image(recommended_anime_posters[1], use_column_width=True)
-        with col2:
-            st.link_button(
-                f"{recommended_anime_names[2]}",
-                f"{recommended_anime_urls[2]}",
-                use_container_width=True,
-            )
-            st.image(recommended_anime_posters[2], use_column_width=True)
-        with col3:
-            st.link_button(
-                f"{recommended_anime_names[3]}",
-                f"{recommended_anime_urls[3]}",
-                use_container_width=True,
-            )
-            st.image(recommended_anime_posters[3], use_column_width=True)
 
-    st.divider()
-
-    with st.container():
-        col4, col5, col6, col7 = st.columns(4)
-        with col4:
-            st.link_button(
-                f"{recommended_anime_names[4]}",
-                f"{recommended_anime_urls[4]}",
-                use_container_width=True,
-            )
-            st.image(recommended_anime_posters[4], use_column_width=True)
-        with col5:
-            st.link_button(
-                f"{recommended_anime_names[5]}",
-                f"{recommended_anime_urls[5]}",
-                use_container_width=True,
-            )
-            st.image(recommended_anime_posters[5], use_column_width=True)
-        with col6:
-            st.link_button(
-                f"{recommended_anime_names[6]}",
-                f"{recommended_anime_urls[6]}",
-                use_container_width=True,
-            )
-            st.image(recommended_anime_posters[6], use_column_width=True)
-        with col7:
-            st.link_button(
-                f"{recommended_anime_names[7]}",
-                f"{recommended_anime_urls[7]}",
-                use_container_width=True,
-            )
-            st.image(recommended_anime_posters[7], use_column_width=True)
+    for i in range(0, 8, 4):
+        with st.container():
+            cols = st.columns(4)
+            for j, col in enumerate(cols):
+                index = i + j
+                with col:
+                    st.link_button(
+                        f"{recommended_anime_names[index]}",
+                        f"{recommended_anime_urls[index]}",
+                        use_container_width=True,
+                    )
+                    st.image(recommended_anime_posters[index], use_column_width=True)
+        if i == 0:
+            st.divider()
 
 
 # Function to display the top 8 animes with user given anime name and genre
@@ -382,69 +239,21 @@ def top_animes_custom_genres(anime_select, genre_select):
         recommended_anime_posters,
         recommended_anime_urls,
     ) = recommend(anime_select, genre_select)
-    with st.container():
-        col0, col1, col2, col3 = st.columns(4)
-        with col0:
-            st.link_button(
-                f"{recommended_anime_names[0]}",
-                f"{recommended_anime_urls[0]}",
-                use_container_width=True,
-            )
-            st.image(recommended_anime_posters[0], use_column_width=True)
-        with col1:
-            st.link_button(
-                f"{recommended_anime_names[1]}",
-                f"{recommended_anime_urls[1]}",
-                use_container_width=True,
-            )
-            st.image(recommended_anime_posters[1], use_column_width=True)
-        with col2:
-            st.link_button(
-                f"{recommended_anime_names[2]}",
-                f"{recommended_anime_urls[2]}",
-                use_container_width=True,
-            )
-            st.image(recommended_anime_posters[2], use_column_width=True)
-        with col3:
-            st.link_button(
-                f"{recommended_anime_names[3]}",
-                f"{recommended_anime_urls[3]}",
-                use_container_width=True,
-            )
-            st.image(recommended_anime_posters[3], use_column_width=True)
 
-    st.divider()
-
-    with st.container():
-        col4, col5, col6, col7 = st.columns(4)
-        with col4:
-            st.link_button(
-                f"{recommended_anime_names[4]}",
-                f"{recommended_anime_urls[4]}",
-                use_container_width=True,
-            )
-            st.image(recommended_anime_posters[4], use_column_width=True)
-        with col5:
-            st.link_button(
-                f"{recommended_anime_names[5]}",
-                f"{recommended_anime_urls[5]}",
-                use_container_width=True,
-            )
-            st.image(recommended_anime_posters[5], use_column_width=True)
-        with col6:
-            st.link_button(
-                f"{recommended_anime_names[6]}",
-                f"{recommended_anime_urls[6]}",
-                use_container_width=True,
-            )
-            st.image(recommended_anime_posters[6], use_column_width=True)
-        with col7:
-            st.link_button(
-                f"{recommended_anime_names[7]}",
-                f"{recommended_anime_urls[7]}",
-                use_container_width=True,
-            )
-            st.image(recommended_anime_posters[7], use_column_width=True)
+    for i in range(0, 8, 4):
+        with st.container():
+            cols = st.columns(4)
+            for j, col in enumerate(cols):
+                index = i + j
+                with col:
+                    st.link_button(
+                        f"{recommended_anime_names[index]}",
+                        f"{recommended_anime_urls[index]}",
+                        use_container_width=True,
+                    )
+                    st.image(recommended_anime_posters[index], use_column_width=True)
+        if i == 0:
+            st.divider()
 
 
 # Recommender Page
