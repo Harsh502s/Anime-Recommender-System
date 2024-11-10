@@ -16,7 +16,6 @@ no_of_page = int(
     .find("a")["href"]
     .split("=")[1]
 )
-print(no_of_page)
 
 landing_page_url = "https://aniwatchtv.to/az-list"
 page_urls = [
@@ -148,5 +147,4 @@ def create_df_parallel(anime_urls, num_threads=4):
 
 
 anime_df = create_df_parallel(anime_urls)
-anime_df.head()
 anime_df.to_csv("anime_data.csv", index=False)
