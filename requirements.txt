@@ -2,3 +2,10 @@ st_pages
 streamlit
 pandas
 Pillow
+# Scraping dependencies
+httpx
+beautifulsoup4
+lxml
+tqdm
+tenacity
+python-dotenv
