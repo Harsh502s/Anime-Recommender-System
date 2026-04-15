@@ -1,7 +1,15 @@
+# UI dependencies
 st_pages
 streamlit
-pandas
 Pillow
+
+# Data & ML dependencies
+pandas
+numpy
+sentence-transformers
+scikit-learn
+faiss-cpu
+
 # Scraping dependencies
 httpx
 beautifulsoup4
