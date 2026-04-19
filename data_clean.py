@@ -57,12 +57,15 @@ class AnimeRecommendationPipeline:
         # 3. Text Cleaning for Overview
         df['anime_overview'] = df['anime_overview'].fillna("No overview available.")
         df['anime_overview'] = df['anime_overview'].apply(
-            lambda x: re.sub(r"\[Written by MAL Rewrite\].*$", "", x, flags=re.DOTALL).strip()
+            lambda x: re.sub(r"\[Written by MAL Rewrite\].*$", "", str(x), flags=re.DOTALL).strip()
         )
 
-        # 4. Column Renaming
+        # 4. Remove Duplicates based on title (CRITICAL for clean UI)
+        df = df.drop_duplicates(subset=['anime_title'], keep='first')
+        
+        # 5. Column Renaming
         df = df.rename(columns={
-            "anime_urls": "urls",
+            "url": "urls",
             "anime_overview": "overview",
             "anime_genres": "genres",
             "anime_producer": "producer",
@@ -130,19 +133,27 @@ class AnimeRecommendationPipeline:
         query_vector = self.index.reconstruct(int(idx)).reshape(1, -1)
 
         # Search
-        D, I = self.index.search(query_vector, k + 1)
+        D, I = self.index.search(query_vector, k + 10) # Get more to allow filtering
+
+        target_title_lower = title.lower()
 
         # Exclude the item itself
         recommendations = []
         for i in I[0]:
-            if i == idx:
-                continue
             row = self.df.iloc[i]
+            # Skip if same index or same title (handles potential duplicates and seed anime)
+            if i == idx or row['title'].lower() == target_title_lower:
+                continue
+                
             recommendations.append({
                 "title": row['title'],
-                "score": row['score'],
+                "score": float(row['score']) if pd.notna(row['score']) else None,
                 "poster": row['poster'],
-                "anime_id": row['anime_id']
+                "anime_id": int(row['anime_id']),
+                "genres": row['genres'],
+                "urls": row['urls'],
+                "overview": row['overview'],
+                "anime_studio": row['anime_studio']
             })
             if len(recommendations) == k:
                 break

@@ -1,1 +1,83 @@
-<article><section id="project-title"><h1 style="text-align: center;">Anime Recommender System</h1><p style="text-align: center;">Discover Your Next Favorite Anime!</p></section><section id="introduction"><h2 style="text-align: center;">Introduction</h2><p>This Anime Recommender System is a web application built using Streamlit and Python, designed to help users discover new anime based on their preferences. The project addresses the challenge of finding relevant anime content within a vast library by providing personalized recommendations. It's aimed at anime enthusiasts who are looking for a convenient way to explore and find anime they might enjoy.</p></section><section id="features"><h2 style="text-align: center;">Features</h2><ul><li><strong>Personalized Recommendations:</strong> Provides anime recommendations based on user preferences and similarity to previously enjoyed anime.</li><li><strong>Comprehensive Anime Data:</strong> Utilizes a dataset containing detailed information about various anime, including title, overview, genres, studio, and MAL score.</li><li><strong>User-Friendly Interface:</strong> Offers an intuitive and easy-to-navigate web interface built with Streamlit.</li><li><strong>Data Scraping:</strong> Automatically scrapes anime data from aniwatchtv.to to keep the database up-to-date.</li><li><strong>Data Cleaning and Preprocessing:</strong> Employs robust data cleaning and preprocessing techniques to ensure data quality and accuracy.</li></ul></section><section id="installation"><h2 style="text-align: center;">Installation</h2><ol><li><strong>Clone the repository:</strong><pre><code>git clone https://github.com/Harsh502s/Anime-Recommender-System</code></pre></li><li><strong>Navigate to the project directory:</strong><pre><code>cd Anime-Recommender-System</code></pre></li><li><strong>Install dependencies:</strong><pre><code>pip install -r requirements.txt</code></pre></li></ol><h3>Prerequisites</h3><ul><li>Python 3.7 or higher</li><li>Streamlit</li><li>Pandas</li><li>BeautifulSoup4</li><li>requests</li><li>scikit-learn</li><li>nltk</li><li>spacy</li></ul></section><section id="usage"><h2 style="text-align: center;">Usage</h2><p>To run the application, execute the following command:</p><pre><code>streamlit run app.py</code></pre><p>This will launch the Streamlit application in your web browser. You can then select an anime and receive personalized recommendations.</p><h3>Example</h3><p>1. Open the application in your browser.</p><p>2. Enter the name of an anime you like.</p><p>3. The application will display a list of recommended anime based on your input.</p></section><section id="technologies-used"><h2 style="text-align: center;">Technologies Used</h2><ul><li><strong>Python:</strong> The primary programming language.</li><li><strong>Streamlit:</strong> For building the web application interface.</li><li><strong>Pandas:</strong> For data manipulation and analysis.</li><li><strong>BeautifulSoup4:</strong> For web scraping.</li><li><strong>requests:</strong> For making HTTP requests.</li><li><strong>scikit-learn:</strong> For machine learning algorithms (TF-IDF, cosine similarity).</li><li><strong>nltk:</strong> For natural language processing tasks.</li><li><strong>spacy:</strong> For advanced natural language processing and lemmatization.</li></ul></section><section id="project-structure"><h2 style="text-align: center;">Project Structure</h2><pre><code>Anime-Recommender-System/ ├── app.py             # Main Streamlit application file ├── requirements.txt   # List of project dependencies ├── scrape_anime.py    # Script for scraping anime data ├── Data Cleaning_converted_from_notebook.py # Script for cleaning and preprocessing data ├── anime_data.csv     # Scraped anime data ├── anime_url.csv      # Anime URLs ├── rec_data.csv       # Cleaned and processed anime data ├── similarity.pkl     # Pickled cosine similarity matrix └── ninja.png          # Application icon </code></pre></section><section id="configuration"><h2 style="text-align: center;">Configuration</h2><p>No specific configuration is required beyond installing the dependencies. The application is designed to run out-of-the-box with the provided data and scripts.</p></section><section id="documentation"><h2 style="text-align: center;">Documentation</h2><p>The <code>Data Cleaning_converted_from_notebook.py</code> file contains detailed documentation of the data cleaning and preprocessing steps. This includes information on how the data was transformed, cleaned, and prepared for the recommendation system. The notebook details the process of scraping data, handling missing values, cleaning text data, and creating the similarity matrix.</p></section><section id="contributing"><h2 style="text-align: center;">Contributing</h2><p>Contributions are welcome! Please follow these guidelines:</p><ol><li>Fork the repository.</li><li>Create a new branch for your feature or bug fix.</li><li>Make your changes and commit them with descriptive messages.</li><li>Submit a pull request.</li></ol></section><section id="license"><h2 style="text-align: center;">License</h2><p>This project is licensed under the MIT License - see the <a href="LICENSE">LICENSE</a> file for details.</p></section></article>
+# 🌌 Ethereal Anime Recommender
+
+A high-performance, full-stack anime discovery platform featuring a **hybrid vector search engine** (Semantic + Categorical) and a modern **React 19** frontend with glassmorphic design.
+
+![Anime Recommender Hero](https://placehold.co/1200x400/191f2f/78d6cf?text=Anime+Recommender+System+v2)
+
+## ✨ Core Features
+- **🧠 Hybrid Vector Engine:** Combines deep semantic understanding (Sentence Transformers) with categorical precision (Genres/Studios) for results that "feel" right.
+- **⚡ Real-time Autocomplete:** Ultra-fast search suggestions with live metadata as you type.
+- **🎭 Genre Intelligence:** Dynamic sidebar featuring top-frequency genre filters and immersive content exploration.
+- **📺 Netflix-Style UI:** Premium hover experiences with pop-out detail windows and high-resolution poster optimization.
+- **🚀 Scalable Architecture:** Decoupled Flask REST API and Vite-powered React 19 frontend.
+
+---
+
+## 🛠️ Technology Stack
+
+### **Frontend**
+- **Framework:** React 19 + Vite
+- **Styling:** Tailwind CSS v4
+- **Icons:** Lucide React
+- **HTTP Client:** Axios
+
+### **Backend**
+- **Framework:** Flask (Python 3.11+)
+- **Vector Search:** FAISS (Facebook AI Similarity Search)
+- **Model:** `all-MiniLM-L6-v2` (Sentence-Transformers)
+- **Data Engine:** Pandas / NumPy
+
+---
+
+## 🚀 Getting Started
+
+### 1. Backend Setup
+```bash
+# Create and activate virtual environment
+python -m venv venv
+source venv/bin/activate  # venv\Scripts\activate on Windows
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Clean data and generate vector indices
+# This will create the 'model_artifacts' directory
+python data_clean.py
+
+# Launch the API server
+python -m backend.run
+```
+
+### 2. Frontend Setup
+```bash
+cd client
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+---
+
+## 📂 Project Structure
+```text
+├── backend/            # Flask API implementation
+├── client/             # React 19 Frontend
+├── model_artifacts/    # (Generated) Vector index & processed data
+├── data_clean.py       # ML Pipeline: Deduplication & Vectorization
+├── scrape_anime.py     # Production-grade scraper
+└── anime_data.csv      # Raw dataset
+```
+
+---
+
+## 📊 Recommendation Methodology
+The system uses a **Hybrid Indexing** strategy:
+1. **Semantic Layer:** Encodes anime synopses into a 384-dimensional vector space using `SentenceTransformer`.
+2. **Categorical Layer:** One-hot encodes Genres, Studios, and Producers.
+3. **Similarity:** Normalizes and concatenates these layers, then uses **FAISS Inner Product (Cosine Similarity)** matching to find the closest matches in sub-millisecond time.
+
+## 📜 License
+Licensed under the [MIT License](LICENSE).

@@ -1,7 +1,8 @@
-# UI dependencies
-st_pages
-streamlit
-Pillow
+# Backend API
+flask
+flask-cors
+python-dotenv
+gunicorn
 
 # Data & ML dependencies
 pandas
@@ -16,4 +17,3 @@ beautifulsoup4
 lxml
 tqdm
 tenacity
-python-dotenv
