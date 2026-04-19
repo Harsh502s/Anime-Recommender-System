@@ -1,4 +1,19 @@
-st_pages==0.4.5
-streamlit==1.27.2
-pandas==2.1.0
-Pillow==9.5.0
+# Backend API
+flask
+flask-cors
+python-dotenv
+gunicorn
+
+# Data & ML dependencies
+pandas
+numpy
+sentence-transformers
+scikit-learn
+faiss-cpu
+
+# Scraping dependencies
+httpx
+beautifulsoup4
+lxml
+tqdm
+tenacity

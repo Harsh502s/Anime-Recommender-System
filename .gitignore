@@ -1,1 +1,27 @@
-similarity.pkl
+# Environment
+venv/
+.env
+.claude
+.vscode/
+*.pyc
+__pycache__/
+
+# Frontend
+client/node_modules/
+client/dist/
+client/.env.local
+client/.env.*.local
+
+# Data & Models (Large binaries)
+model_artifacts/
+*.pkl
+*.index
+rec_data.csv
+anime_data.csv
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
