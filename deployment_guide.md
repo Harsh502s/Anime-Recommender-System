@@ -47,12 +47,16 @@ Vercel is the gold standard for React/Vite deployment.
 1.  Go to [vercel.com](https://vercel.com) and sign in with GitHub.
 2.  Click **Add New** → **Project**.
 3.  Import your repository.
-4.  **Configure Project:**
-    - **Framework Preset:** `Vite`
-    - **Root Directory:** `client` (Make sure you point to the client subfolder!)
+4.  **Configure Project (CRITICAL):**
+    - **Root Directory:** Edit this and select the `client` folder.
+    - **Framework Preset:** `Vite` (Vercel usually detects this).
+    - **Output Directory:** If it asks, ensure it is set to `dist` (NOT `build`).
 5.  **Environment Variables:**
     - Add `VITE_API_BASE_URL`: Paste your Render API URL here and append `/api/v1` (e.g., `https://anime-recommender-api.onrender.com/api/v1`)
 6.  Click **Deploy**.
+
+> [!NOTE]
+> I have added a `client/vercel.json` file which automatically handles React Router "404 on refresh" errors for you.
 
 ---
 
